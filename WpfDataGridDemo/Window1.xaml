@@ -1,0 +1,394 @@
+﻿<Window x:Class="WpfDataGridDemo.Window1"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfDataGridDemo"
+        mc:Ignorable="d"
+        Title="Window1" Height="881" Width="1330" Loaded="Window_Loaded">
+    <Window.Resources>
+        <Style x:Key="MSAll" TargetType="DataGridColumnHeader">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Grid>
+                            <!--模板绑定-->
+
+                            <Grid Width="166" Height="74">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+
+                                <!--设置标题名称-->
+                                <Label Content="所有图斑" FontFamily="微软雅黑" FontWeight="Black" FontSize="14" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.ColumnSpan="2" />
+                                <!--设置间隔线 水平中2-->
+                                <Rectangle Fill="#ccc" Height="1" Visibility="Visible" VerticalAlignment="Top" Grid.Row="1" Grid.RowSpan="2" Grid.ColumnSpan="3" />
+                                <!--设置间隔线 垂直中1-->
+                                <Rectangle Fill="#ccc" Width="1" Visibility="Visible" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center"/>
+                                <Label Content="个数" FontFamily="微软雅黑" FontSize="14" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                                <!--设置间隔线 垂直右2-->
+                                <Rectangle Fill="#ccc" Width="1" Visibility="Visible" Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Right"/>
+                                <Label Content="面积" FontFamily="微软雅黑" FontSize="14" Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                                <!--设置间隔线 水平下2-->
+                                <Rectangle Fill="#ccc" Height="1" Visibility="Visible" VerticalAlignment="Bottom" Grid.Row="1" Grid.RowSpan="2" Grid.ColumnSpan="3" />
+                            </Grid>
+
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="CPNMSTrue" TargetType="DataGridColumnHeader">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Grid>
+                            <!--模板绑定-->
+
+                            <Grid Width="420" Height="74">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+
+                                <!--设置标题名称-->
+                                <Label FontFamily="微软雅黑" FontSize="14" FontWeight="Black" Content="核查单位已核查图斑" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.ColumnSpan="5" />
+                                <!--设置间隔线-->
+                                <Rectangle Fill="#ccc" Height="1" Visibility="Visible" Grid.Row="0" Grid.RowSpan="2" Grid.ColumnSpan="5" />
+                                <Rectangle Fill="#ccc" Width="1" Visibility="Visible" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" />
+                                <Label FontFamily="微软雅黑"  FontSize="14" Content="个数" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Center" />
+
+                                <Rectangle Fill="#ccc" Width="1" Visibility="Visible" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" />
+                                <Label FontFamily="微软雅黑" FontSize="14" Content="面积" Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" />
+
+                                <Rectangle Fill="#ccc" Width="1" Visibility="Visible" Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2" />
+                                <Label FontFamily="微软雅黑" FontSize="14" Content="通过个数" Grid.Row="2" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" />
+
+                                <Rectangle Fill="#ccc" Width="1" Visibility="Visible" Grid.Row="1" Grid.Column="3" Grid.ColumnSpan="2" />
+                                <Label FontFamily="微软雅黑" FontSize="14" Content="不通过个数" Grid.Row="2" Grid.Column="3" VerticalAlignment="Center" HorizontalAlignment="Center" />
+
+                                <Rectangle Fill="#ccc" Width="1" Visibility="Visible" Grid.Row="0" Grid.RowSpan="2" Grid.Column="4" HorizontalAlignment="Right" />
+                                <Label FontFamily="微软雅黑" FontSize="14" Content="通过率" Grid.Row="2" Grid.Column="4" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                                <Rectangle Fill="#ccc" Height="1" Visibility="Visible" Grid.Row="1" Grid.RowSpan="2" Grid.ColumnSpan="5" VerticalAlignment="Bottom"/>
+                            </Grid>
+
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <!--ScrollChanged="ScrollViewer_ScrollChanged"-->
+    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+        <Grid  Width="1305" MinHeight="881">
+
+            <Border Width="1296" Height="60" HorizontalAlignment="Left" VerticalAlignment="Top">
+                <Label Content="工作成果统计" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontFamily="微软雅黑" FontSize="18"></Label>
+            </Border>
+
+            <!--#region datagrid1-->
+            <DataGrid Name="dategrid1" Width="156" HorizontalAlignment="Left" GridLinesVisibility="None" Background="#fff" BorderBrush="Transparent" AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True" SelectionMode="Single" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden" Margin="0,60,0,0" Panel.ZIndex="5">
+
+                <!--#region 表头-->
+                <DataGrid.Style>
+                    <Style TargetType="DataGrid">
+                        <Setter Property="Background" Value="#E7F3FF"></Setter>
+                        <Setter Property="HeadersVisibility" Value="Column"></Setter>
+                    </Style>
+                </DataGrid.Style>
+                <!--#endregion-->
+
+                <!--#region 数据网格的列标题样式属性-->
+                <DataGrid.ColumnHeaderStyle>
+                    <!--样式类型：DataGridColumnHeader（数据网格列标题）-->
+                    <Style TargetType="{x:Type DataGridColumnHeader}">
+                        <Setter Property="Height" Value="74"/>
+                        <Setter Property="Background" Value="#E1F0FF"/>
+                        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                        <Setter Property="FontFamily" Value="微软雅黑"></Setter>
+                        <Setter Property="FontSize" Value="14"></Setter>
+                        <Setter Property="BorderBrush" Value="#ccc"></Setter>
+                        <Setter Property="BorderThickness">
+                            <Setter.Value>
+                                <Thickness Top="1" Right="1" Bottom="1"></Thickness>
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="FontWeight" Value="Black"></Setter>
+                    </Style>
+                </DataGrid.ColumnHeaderStyle>
+                <!--#endregion-->
+
+                <DataGrid.RowStyle>
+                    <Style TargetType="DataGridRow">
+                        <Setter Property="Height" Value="259" />
+                        <Setter Property="BorderThickness">
+                            <Setter.Value>
+                                <Thickness Right="2"></Thickness>
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="BorderBrush" Value="#ccc"></Setter>
+                        <Style.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="Foreground" Value="Red"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </DataGrid.RowStyle>
+
+                <!--#region DataGrid的CellStyle属性（数据表格的单元格样式-->
+                <DataGrid.CellStyle >
+                    <Style TargetType="DataGridCell">
+                        <Setter Property="BorderThickness">
+                            <Setter.Value>
+                                <Thickness Bottom="1" Right="1"></Thickness>
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="BorderBrush" Value="#ccc"></Setter>
+                        <!--样式的触发器-->
+                        <Style.Triggers>
+                            <!--是否选中是触发-->
+                            <Trigger Property="IsSelected" Value="True">
+                                <!--触发：背景-->
+                                <Setter Property="Background">
+                                    <!--设置触发背景的值-->
+                                    <Setter.Value>
+                                        <!--Color：颜色，Opacity：透明度-->
+                                        <SolidColorBrush Color="AntiqueWhite" Opacity="0.9"/>
+                                    </Setter.Value>
+                                </Setter>
+                                <!--设置字体颜色（Foreground）：红色（Red）-->
+                                <Setter Property="Foreground" Value="DarkMagenta"></Setter>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </DataGrid.CellStyle>
+                <!--#endregion-->
+
+                <DataGrid.Columns>
+
+                    <!--#region 行政区代码-->
+                    <DataGridTemplateColumn x:Name="DistrictCode" Header="行政区代码" Width="*">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
+                                    <Label Content="{Binding Code}" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"></Label>
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <!--#endregion-->
+
+                    <!--#region 行政区名称-->
+                    <DataGridTemplateColumn x:Name="DistrictName" Header="行政区名称" Width="*">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
+                                    <Label Content="{Binding Name}" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"></Label>
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <!--#endregion-->
+
+                </DataGrid.Columns>
+
+            </DataGrid>
+            <!--#endregion-->
+
+            <!--#region datagrid2-->
+            <DataGrid Width="1140" Name="dategrid2" HorizontalAlignment="Left" Margin="154,60,0,0" GridLinesVisibility="None" Background="#fff" BorderBrush="Transparent" AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True" SelectionMode="Single" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden">
+
+                <!--#region 表头-->
+                <DataGrid.Style>
+                    <Style TargetType="DataGrid">
+                        <Setter Property="Background" Value="#E7F3FF"></Setter>
+                        <Setter Property="HeadersVisibility" Value="Column"></Setter>
+                    </Style>
+                </DataGrid.Style>
+                <!--#endregion-->
+
+                <!--#region 数据网格的列标题样式属性-->
+                <DataGrid.ColumnHeaderStyle>
+                    <!--样式类型：DataGridColumnHeader（数据网格列标题）-->
+                    <Style TargetType="{x:Type DataGridColumnHeader}">
+                        <Setter Property="Height" Value="74"/>
+                        <Setter Property="BorderThickness">
+                            <Setter.Value>
+                                <Thickness Left="1" Top="1" Right="1" Bottom="1"></Thickness>
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="Background" Value="#E1F0FF"/>
+                        <Setter Property="BorderBrush" Value="#ccc"></Setter>
+                        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                        <Setter Property="FontFamily" Value="微软雅黑"></Setter>
+                        <Setter Property="FontWeight" Value="Black"></Setter>
+                        <Setter Property="FontSize" Value="14"></Setter>
+                    </Style>
+                </DataGrid.ColumnHeaderStyle>
+                <!--#endregion-->
+
+                <DataGrid.RowStyle>
+                    <Style TargetType="DataGridRow">
+                        <Setter Property="Height" Value="37" />
+                        <Setter Property="BorderBrush" Value="#ccc"></Setter>
+                        <Setter Property="BorderThickness">
+                            <Setter.Value>
+                                <Thickness></Thickness>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </DataGrid.RowStyle>
+
+                <!--#region DataGrid的CellStyle属性（数据表格的单元格样式-->
+                <DataGrid.CellStyle >
+                    <Style TargetType="DataGridCell">
+                        <Setter Property="BorderThickness">
+                            <Setter.Value>
+                                <Thickness Bottom="1" Right="1"></Thickness>
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="BorderBrush" Value="#ccc"></Setter>
+                        <!--样式的触发器-->
+                        <Style.Triggers>
+                            <!--是否选中是触发-->
+                            <Trigger Property="IsSelected" Value="True">
+                                <!--触发：背景-->
+                                <Setter Property="Background">
+                                    <!--设置触发背景的值-->
+                                    <Setter.Value>
+                                        <!--Color：颜色，Opacity：透明度-->
+                                        <SolidColorBrush Color="AntiqueWhite" Opacity="0.9"/>
+                                    </Setter.Value>
+                                </Setter>
+                                <!--设置字体颜色（Foreground）：红色（Red）-->
+                                <Setter Property="Foreground" Value="DarkMagenta"></Setter>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </DataGrid.CellStyle>
+                <!--#endregion-->
+
+                <DataGrid.Columns>
+
+                    <!--#region 图斑类型方法2：放入datagrid-->
+                    <!--<DataGridTemplateColumn x:Name="datacol" Header="图斑类型" Width="130">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
+                                <Label Content="{Binding DistrictModels.Code}" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"></Label>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>-->
+                    <!--#endregion-->
+
+                    <!--#region 图斑类型-->
+                    <DataGridTemplateColumn x:Name="map_spotType" Header="图斑类型" Width="130">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+
+                                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
+                                    <Label Content="{Binding Name}" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"></Label>
+                                </StackPanel>
+
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <!--#endregion-->
+
+                    <!--#region 所有图斑-->
+                    <DataGridTemplateColumn Header="sec" HeaderStyle="{StaticResource MSAll}">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+
+                                <!--数据内容-->
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Content="{Binding AllNumber}" Width="82" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+                                    <Rectangle Fill="#ccc" VerticalAlignment="Stretch" Margin="0" Width="1" />
+                                    <Label Content="{Binding AllArea}" Width="80" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+                                </StackPanel>
+
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <!--#endregion-->
+
+                    <!--#region 核查单位已核查图斑-->
+                    <DataGridTemplateColumn Header="sec" HeaderStyle="{StaticResource CPNMSTrue}">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+
+                                <!--数据内容-->
+                                <StackPanel Orientation="Horizontal">
+                                    <!--个数-->
+                                    <Label Content="{Binding HCTureNumber}" Width="83" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+                                    <Rectangle Fill="#ccc" VerticalAlignment="Stretch" Margin="0" Width="1" />
+                                    <!--面积-->
+                                    <Label Content="{Binding HCTrueArea}" Width="83" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+                                    <Rectangle Fill="#ccc" VerticalAlignment="Stretch" Margin="0" Width="1" />
+                                    <!--通过个数-->
+                                    <Label Content="{Binding HCTruePassNumber}" Width="83" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+                                    <Rectangle Fill="#ccc" VerticalAlignment="Stretch" Margin="0" Width="1" />
+                                    <!--不通过个数-->
+                                    <Label Content="{Binding HCTrueNoPassNumber}" Width="83" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+                                    <Rectangle Fill="#ccc" VerticalAlignment="Stretch" Margin="0" Width="1" />
+                                    <!--通过率-->
+                                    <Label Content="{Binding HCTruePassingRate}" Width="80" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+                                </StackPanel>
+
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <!--#endregion-->
+
+                    <!--#region 监理单位已核查图斑-->
+                    <DataGridTemplateColumn Header="sec" HeaderStyle="{StaticResource CPNMSTrue}">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+
+                                <!--数据内容-->
+                                <StackPanel Orientation="Horizontal">
+                                    <!--个数-->
+                                    <Label Content="{Binding JLTureNumber}" Width="83" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+                                    <Rectangle Fill="#ccc" VerticalAlignment="Stretch" Margin="0" Width="1" />
+                                    <!--面积-->
+                                    <Label Content="{Binding JLTrueArea}" Width="83" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+                                    <Rectangle Fill="#ccc" VerticalAlignment="Stretch" Margin="0" Width="1" />
+                                    <!--通过个数-->
+                                    <Label Content="{Binding JLTruePassNumber}" Width="83" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+                                    <Rectangle Fill="#ccc" VerticalAlignment="Stretch" Margin="0" Width="1" />
+                                    <!--不通过个数-->
+                                    <Label Content="{Binding JLTrueNoPassNumber}" Width="83" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+                                    <Rectangle Fill="#ccc" VerticalAlignment="Stretch" Margin="0" Width="1" />
+                                    <!--通过率-->
+                                    <Label Content="{Binding JLTruePassingRate}" Width="80" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+                                </StackPanel>
+
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <!--#endregion-->
+
+                </DataGrid.Columns>
+
+            </DataGrid>
+            <!--#endregion-->
+
+            <Rectangle Canvas.Left ="20" Canvas.Top ="30" Grid.Row="0" Grid.Column="0" Panel.ZIndex="1" Opacity="0" Fill ="White" Stroke ="Black" x:Name ="mainrectangle" Margin="0,0,36,10.333" />
+        </Grid>
+    </ScrollViewer>
+
+</Window>
